@@ -44,10 +44,52 @@ def extrato():
     print(f"Saldo atual: R$ {saldo:.2f}")
 
 def cadastra_usuario():
-    ...
+    global usuarios
+
+    print("Cadastro de usuário")
+    nome = input("Nome do novo usuario: ")
+    endereco = input("Endereço: ")
+    data_nascimento = input("Data de nascimento: ")
+    cpf_cru = input("CPF: ")
+
+    cpf = transforma_cpf(cpf_cru)
+
+    # Validacoes
+    for u in usuarios:
+        if u['cpf'] == cpf:
+            print(f"Usuario já cadastrado com o {cpf=}")
+            return
+
+    usuarios.append(
+        {
+            'nome': nome,
+            'endereco': endereco,
+            'data_nascimento': data_nascimento,
+            'cpf': cpf
+        }
+    )
+
+def transforma_cpf(cpf_cru):
+    tabela_transposicao = str.maketrans({'.': '', '-':''})
+    return cpf_cru.translate(tabela_transposicao)
+
 
 def cadastra_conta():
-    ...
+    print("Cadastro de contas")
+    cpf_cru = input("Digite o cpf do dono da conta")
+    cpf = transforma_cpf(cpf_cru)
+
+    for u in usuarios:
+        if u['cpf'] == cpf:
+            contas.append(
+                {
+                    'numero': len(contas)+1,
+                    'agencia': "0001",
+                    'cpf': cpf
+                }
+            )
+    print("Não existe usuário cadastrado para o CPF informado")
+
 
 menu_saque = '''
 === SAQUE ===
@@ -64,6 +106,8 @@ limite = 500
 historico = list()
 numero_saques = 0
 LIMITE_SAQUES = 3
+usuarios = list()
+contas = list()
 
 
 while True:
