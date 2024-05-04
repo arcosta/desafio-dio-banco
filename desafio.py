@@ -7,6 +7,48 @@ menu_principal = '''
 
 =>'''
 
+def saque(*,saldo, valor, limite, numero_saques, limite_saques):
+    print('Saque')
+        
+    
+    if saldo <= 0 or valor > saldo:
+        print('Saldo insuficiente')
+    if valor > limite:
+        print('Limite excedido')
+    if numero_saques > limite_saques:
+        print('Limite de saques diário excedido')
+    numero_saques += 1
+    historico.append(f'R$ {valor:.2f}D')
+    saldo -= valor
+
+    return saldo,historico
+
+
+def deposito():
+    global saldo
+    global extrato
+    global menu_deposito
+
+    print('Depósito')
+    valor = float(input(menu_deposito))
+    historico.append(f"R$ {valor:.2f}C")
+    saldo += valor
+
+def extrato():
+    global historico
+    global saldo
+
+    print('Extrato')
+    for movimentacao in historico:
+        print(movimentacao)
+    print(f"Saldo atual: R$ {saldo:.2f}")
+
+def cadastra_usuario():
+    ...
+
+def cadastra_conta():
+    ...
+
 menu_saque = '''
 === SAQUE ===
 Entre com o valor a ser sacado
@@ -19,37 +61,22 @@ Entre com o valor a ser depositado
 
 saldo = 0
 limite = 500
-extrato = list()
+historico = list()
 numero_saques = 0
 LIMITE_SAQUES = 3
+
 
 while True:
     opcao = input(menu_principal)
     if opcao == 'd':
-        print('Depósito')
-        valor = float(input(menu_deposito))
-        extrato.append(f"R$ {valor:.2f}C")
-        saldo += valor
+        deposito()
 
     elif opcao == 's':
-        print('Saque')
-        
         valor = input(menu_saque)
-        if saldo <= 0 or valor > saldo:
-            print('Saldo insuficiente')
-        if valor > limite:
-            print('Limite excedido')
-        if numero_saques > LIMITE_SAQUES:
-            print('Limite de saques diário excedido')
-        numero_saques += 1
-        extrato.append(f'R$ {valor:.2f}D')
-        saldo -= valor
+        saldo, extrato = saque(saldo=saldo, valor=valor, limite=limite, numero_saques=numero_saques, limite_saques=LIMITE_SAQUES)
         
     elif opcao == 'e':
-        print('Extrato')
-        for movimentacao in extrato:
-            print(movimentacao)
-        print(f"Saldo atual: R$ {saldo:.2f}")
+        extrato()
 
     elif opcao == 'q':
         break
