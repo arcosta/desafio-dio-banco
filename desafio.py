@@ -1,8 +1,14 @@
+from desafio_oo import PessoaFisica,Conta
+from datetime import datetime as dt
+
 menu_principal = '''
 
 [d] Depositar
 [s] Sacar
 [e] Extrato
+[u] Novo usuário
+[lu] Listar usuários
+[c] Nova conta
 [q] Sair
 
 =>'''
@@ -90,6 +96,28 @@ def cadastra_conta():
             )
     print("Não existe usuário cadastrado para o CPF informado")
 
+def nova_conta():
+    ...
+def listar_usuarios():
+    for user in usuarios:
+        print(user)
+
+
+def novo_usuario():
+    print('''
+    === NOVO USUARIO ===''')
+    nome = input('Nome: ')
+    cpf = transforma_cpf( input('CPF: ') )
+    str_dn = input('Data de nascimento (dd/mm/yyyy): ')
+    data_nascimento = dt.strptime (
+        str_dn.strip() + ' 00:00:00',
+        '%d/%m/%Y %H:%M:%S'
+    )
+    endereco = input('Endereço: ')
+
+    pf = PessoaFisica(cpf, nome, data_nascimento, endereco)
+
+    usuarios.append(pf)
 
 menu_saque = '''
 === SAQUE ===
@@ -124,6 +152,12 @@ while True:
 
     elif opcao == 'q':
         break
+    elif opcao == 'c':
+        nova_conta()
+    elif opcao == 'u':
+        novo_usuario()
+    elif opcao == 'lu':
+        listar_usuarios()
     else:
         print('Opção inválida. Por favor, selecione novamente a operação desejada')
 
